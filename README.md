@@ -12,7 +12,7 @@ GPO-Anwendung verifiziert.
 
 ## Setup
 - **Host:** Windows 11, 32 GB RAM
-- **Virtualisierung:** VirtualBox 7.x, Internes Netzwerk `ad-lab`
+- **Virtualisierung:** VirtualBox 7.2, Internes Netzwerk `ad-lab`
 - **Domain Controller (`dc01`):** Windows Server 2022 (Eval),
   4 GB RAM, 2 vCPU, 60 GB HDD
 - **Client (`client01`):** Windows 11 Enterprise (Eval),
