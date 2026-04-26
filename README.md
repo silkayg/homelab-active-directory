@@ -187,3 +187,16 @@ OUs und Group Policies.
 - Windows 11 OOBE-Bypass per `oobe\bypassnro` für lokale Konten
 - A-G-DL-P-Schema für AD-Berechtigungen verstanden
 
+### Stolpersteine (Sitzung 2/3)
+- Beim Windows-11-OOBE konnte der `oobe\bypassnro`-Trick zunächst
+  nicht greifen, weil der Client tatsächlich Internetzugriff hatte.
+  Ursache: Im VirtualBox-Setup war noch ein NAT-Adapter aktiv, den
+  ich übersehen hatte. Lösung: VM heruntergefahren, Adapter-2
+  deaktiviert, Adapter-1 als reines internes Netzwerk gelassen,
+  Setup neu durchlaufen — danach war "Ich habe kein Internet"
+  automatisch verfügbar.
+
+- Lehrreicher Effekt: Im echten Lab muss die Trennung zwischen
+  Client-Netz und externem Internet sauber sein, sonst gehen DNS-
+  Anfragen am DC vorbei.
+
