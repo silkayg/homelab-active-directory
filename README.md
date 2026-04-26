@@ -200,3 +200,26 @@ OUs und Group Policies.
   Client-Netz und externem Internet sauber sein, sonst gehen DNS-
   Anfragen am DC vorbei.
 
+### Zusatz-GPO: Eingabeaufforderung sperren
+
+GPO `GPO-Mitarbeiter-CMD-sperren` mit OU `_Lab/Mitarbeiter` verknüpft.
+
+Pfad: Benutzerkonfiguration → Richtlinien → Administrative Vorlagen
+→ System → "Zugriff auf Eingabeaufforderung verhindern" → Aktiviert.
+
+Verifiziert auf Client `client01` als User `aadmin`:
+- Win+R → cmd → "Die Eingabeaufforderung wurde vom Administrator
+  deaktiviert" wird angezeigt.
+
+#### Bekannte Limitierung
+Diese GPO sperrt nur die `cmd.exe` per Name. Umbenannte Kopien oder
+PowerShell sind nicht betroffen. Für umfassende Sperrung wäre
+AppLocker (Computerkonfiguration → Anwendungssteuerungsrichtlinien)
+der nächste Schritt.
+
+#### Lessons Learned
+- Unterschied User-Konfiguration vs. Computer-Konfiguration in GPOs
+  praktisch verstanden
+- `gpupdate /force` als manueller Refresh, statt auf Standard-Zyklus
+  zu warten
+- GPO-Wirkung mit `gpresult /r` verifizierbar
