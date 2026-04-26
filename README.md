@@ -144,3 +144,46 @@ OUs und Group Policies.
 
 &#x20; unabhängig, wirkt aber erst durch Verknüpfung
 
+
+## Sitzung 2/3: Client-VM und Domain-Join
+
+### Vorbereitung
+- Windows 11 Enterprise Evaluation ISO heruntergeladen (90 Tage)
+- VM `client01` angelegt: 4 GB RAM, 2 vCPU, 50 GB HDD, EFI + TPM 2.0
+- Internes Netzwerk `ad-lab` als einziger Adapter
+- "Skip Unattended Installation" aktiv
+
+### Stolpersteine
+- Windows 11 zwingt im OOBE zur Microsoft-Account-Anmeldung. Umgangen
+  mit `oobe\bypassnro` aus der Eingabeaufforderung — danach lokaler
+  User `localadmin` möglich.
+- TPM-Prüfung im Setup wäre fehlgeschlagen, weil [hier eintragen falls
+  passiert]. Lösung: Registry-Workaround unter
+  HKLM\SYSTEM\Setup\LabConfig.
+
+### Netzwerk
+- Statische IP: `192.168.56.20/24`
+- Default Gateway: `192.168.56.10` (DC)
+- DNS-Server: `192.168.56.10` (DC ist DNS-Authority für lab.local)
+- Verifiziert: `ping 192.168.56.10` und `nslookup lab.local` erfolgreich
+
+### Domain-Join
+- Per PowerShell: `Add-Computer -DomainName "lab.local" -Restart`
+- Anmeldung mit `lab\administrator`
+- Nach Reboot: Login als Domänen-User `lab\aadmin` erfolgreich
+
+### GPO-Verifikation
+- `gpresult /r` zeigt `GPO-Mitarbeiter-Desktop` als angewendet
+- Bildschirmschoner-Pflicht ist aktiv
+
+## Lessons Learned (gesamt)
+- Active-Directory-Aufbau verstanden: Forest, Domain, OU, User, Gruppe, GPO
+- Praktischer Unterschied zwischen Windows-Editionen Pro/Enterprise
+  (domänenfähig) vs. Home (nicht domänenfähig)
+- DNS ist im AD-Kontext kritisch — der DC muss DNS-Server für die Clients
+  sein, sonst funktioniert keine Domänen-Auflösung
+- Internes VirtualBox-Netzwerk simuliert ein abgeschlossenes Firmennetz
+  ohne Internetverbindung — für AD-Lab ideal, weil sauber abgeschottet
+- Windows 11 OOBE-Bypass per `oobe\bypassnro` für lokale Konten
+- A-G-DL-P-Schema für AD-Berechtigungen verstanden
+
